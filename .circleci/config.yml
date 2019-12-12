@@ -1,0 +1,52 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Enable QEMU
+          command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - run:
+          name: Build image
+          command: docker build -t deviceplane/demo:$CIRCLE_SHA1 .
+      - run:
+          name: Docker login
+          command: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      - run:
+          name: Deploy image
+          command: docker push deviceplane/demo:$CIRCLE_SHA1
+
+  deploy:
+    docker:
+      - image: deviceplane/cli:2.0.0
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Deviceplane
+          command: deviceplane deploy demo deviceplane.yml
+
+  deploy-canary:
+    docker:
+      - image: deviceplane/cli:2.0.0
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Deviceplane (canary)
+          command: deviceplane deploy demo-canary deviceplane.yml
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy-canary:
+          filters:
+            branches:
+              only: canary

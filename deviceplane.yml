@@ -1,0 +1,4 @@
+demo:
+  image: deviceplane/demo:$CIRCLE_SHA1
+  ports:
+  - 3000:3000
