@@ -19,21 +19,12 @@ jobs:
 
   deploy:
     docker:
-      - image: deviceplane/cli:2.0.0
+      - image: deviceplane/cli:2.1.4
     steps:
       - checkout
       - run:
           name: Deploy to Deviceplane
           command: deviceplane deploy demo deviceplane.yml
-
-  deploy-canary:
-    docker:
-      - image: deviceplane/cli:2.0.0
-    steps:
-      - checkout
-      - run:
-          name: Deploy to Deviceplane (canary)
-          command: deviceplane deploy demo-canary deviceplane.yml
 
 workflows:
   version: 2
@@ -46,7 +37,3 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-canary:
-          filters:
-            branches:
-              only: canary
