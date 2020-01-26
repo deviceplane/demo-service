@@ -47,14 +47,13 @@ Push the image we built previously to Docker Hub.
 Now that the newly built Docker image is available in Docker Hub we can deploy to Deviceplane.
 
 ```
-deviceplane deploy deviceplane.yml
+deviceplane deploy demo deviceplane.yml
 ```
 
-This command requires three [environment variables](https://circleci.com/docs/2.0/env-vars/) to be setup ahead of time.
+This command requires three [environment variables](https://circleci.com/docs/2.0/env-vars/) to be setup ahead of time. These are setup as [environment variables](https://circleci.com/docs/2.0/env-vars/) in CircleCI.
 
 - `DEVICEPLANE_ACCESS_KEY` - An access key for either a user or service account that has permission to release to this deployment.
 - `DEVICEPLANE_PROJECT` - The name or ID of the project we're deploying to.
-- `DEVICEPLANE_APPLICATION` - The name or ID of the application we're deploying to.
 
 The file `deviceplane.yml` contains the specification for an application in Deviceplane. The image that's used is based on the image that was pushed to Docker Hub in the build step.
 
