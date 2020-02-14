@@ -2,7 +2,7 @@ const http = require('http')
 const metrics = require('./metrics')
 
 startServer("Server", 3000, (request, response) => {
-  response.end('Hello world! (33)')
+  response.end('Hello world! (34)')
 });
 
 startServer("Metrics Server", 2112, metrics.handler);
